@@ -13,11 +13,12 @@ import {
   InputAdornment,
 } from '@mui/material';
 import {
+  Lock,
   Visibility,
   VisibilityOff,
   TravelExplore,
 } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import SignUp from './SignUp';
 
 const signInImage =
@@ -46,7 +47,7 @@ export default function Home() {
     if (formData.email && formData.password) {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userEmail', formData.email);
-      router.push('/kyc-wizard');
+      router.push('/kyc');
     } else {
       setError('Please enter both email and password');
     }
@@ -69,8 +70,10 @@ export default function Home() {
                 backgroundPosition: 'center',
                 color: 'white',
                 p: { xs: 3, sm: 5, md: 8 },
-                minHeight: { xs: 280, md: '100vh' },
-                display: 'flex',
+                height: { xs: 260, sm: 320, md: '100vh' },
+                minHeight: { xs: 260, md: '100vh' },
+                width: '100%',
+                display: { xs: 'none', md: 'flex' },
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
@@ -106,20 +109,42 @@ export default function Home() {
                   p: { xs: 2, sm: 3, md: 4 },
                 }}
               >
-                <Typography variant="h4" gutterBottom fontWeight="bold">
-                  Sign in to your account
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  Welcome back. Enter your details to continue.
-                </Typography>
+                <Box sx={{ textAlign: 'center', mb: 3 }}>
+                  <Box
+                    component="img"
+                    src="/globe.svg"
+                    alt="Logo"
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      mx: 'auto',
+                      mb: 2,
+                      display: 'block',
+                    }}
+                  />
+                  <Typography variant="h4" gutterBottom fontWeight="bold">
+                    Sign in to your account
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Welcome back. Enter your details to continue.
+                  </Typography>
+                </Box>
 
                 {error && (
-                  <Alert severity="error" sx={{ mb: 3 }}>
+                  <Alert severity="error" sx={{ maxWidth: 420, mx: 'auto', mb: 3 }}>
                     {error}
                   </Alert>
                 )}
 
-                <form onSubmit={handleSubmit}>
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  sx={{
+                    width: '100%',
+                    maxWidth: 420,
+                    mx: 'auto',
+                  }}
+                >
                   <TextField
                     fullWidth
                     label="Email address"
@@ -144,17 +169,28 @@ export default function Home() {
                     required
                     size="small"
                     variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Lock />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              title={showPassword ? 'Hide password' : 'Show password'}
+                              onClick={() => setShowPassword((current) => !current)}
+                              onMouseDown={(event) => event.preventDefault()}
+                              edge="end"
+                              sx={{ color: 'text.secondary' }}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
                     }}
                   />
 
@@ -180,7 +216,7 @@ export default function Home() {
                   </Button>
 
                   <Box sx={{ textAlign: 'center', mt: 2 }}>
-                    <Link href="#" variant="body2" sx={{ display: 'block', mb: 1 }}>
+                    <Link href="/forgot-password" variant="body2" sx={{ display: 'block', mb: 1 }}>
                       Lost your password?
                     </Link>
                     <Link 
@@ -194,7 +230,7 @@ export default function Home() {
                   <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', mt: 4, color: 'text.secondary' }}>
                     © 2020-2026 All Rights Reserved. Tripclap® is a registered trademark of Digiclap, Tripclap Technology Private Limited.
                   </Typography>
-                </form>
+                </Box>
               </Box>
             </Box>
     </Box>
