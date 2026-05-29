@@ -9,6 +9,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  Link,
   Alert,
   IconButton,
   InputAdornment,
@@ -95,7 +96,7 @@ export default function SignUp({ onBackToSignIn }) {
       localStorage.setItem('userEmail', formData.email);
       setSuccess('Account created successfully! Redirecting...');
       setTimeout(() => {
-        window.location.href = '/kyc-wizard';
+        window.location.href = '/kyc';
       }, 2000);
     }
   };
@@ -117,7 +118,9 @@ export default function SignUp({ onBackToSignIn }) {
                 backgroundPosition: 'center',
                 color: 'white',
                 p: { xs: 3, sm: 5, md: 8 },
-                minHeight: { xs: 280, md: '100vh' },
+                height: { xs: 260, sm: 320, md: '100vh' },
+                minHeight: { xs: 260, md: '100vh' },
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -149,8 +152,6 @@ export default function SignUp({ onBackToSignIn }) {
             <Box
               sx={{
                 minHeight: { xs: 'auto', md: '100vh' },
-                maxHeight: { md: '100vh' },
-                overflowY: 'auto',
                 bgcolor: 'white',
               }}
             >
@@ -159,21 +160,38 @@ export default function SignUp({ onBackToSignIn }) {
                   width: '100%',
                   maxWidth: 720,
                   mx: 'auto',
-                  p: { xs: 2, sm: 3, md: 4 },
+                  p: { xs: 2, sm: 2.5, md: 3 },
+                  '& .MuiFormHelperText-root': {
+                    mt: 0.25,
+                  },
+                  '& .MuiInputBase-input': {
+                    py: 0.9,
+                  },
+                  '& .MuiInputAdornment-root svg': {
+                    fontSize: 20,
+                  },
                 }}
               >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                  <Typography variant="h4" fontWeight="bold">
+                <Box sx={{ textAlign: 'center', mb: 2 }}>
+                  <Box
+                    component="img"
+                    src="/globe.svg"
+                    alt="Logo"
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      mx: 'auto',
+                      mb: 1.5,
+                      display: 'block',
+                    }}
+                  />
+                  <Typography variant="h4" fontWeight="bold" gutterBottom>
                     Sign Up
                   </Typography>
-                  <Button onClick={onBackToSignIn} variant="text">
-                    Back to Sign In
-                  </Button>
+                  <Typography variant="body2" color="text.secondary">
+                    Please fill the below details to SIGN UP
+                  </Typography>
                 </Box>
-
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  Please fill the below details to SIGN UP
-                </Typography>
 
                 {success && (
                   <Alert severity="success" sx={{ mb: 3 }}>
@@ -186,7 +204,7 @@ export default function SignUp({ onBackToSignIn }) {
                     sx={{
                       display: 'grid',
                       gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
-                      gap: 3,
+                      gap: { xs: 1.25, sm: 1.5 },
                     }}
                   >
                     <Box>
@@ -351,7 +369,7 @@ export default function SignUp({ onBackToSignIn }) {
                             xs: 'repeat(2, minmax(0, 1fr))',
                             sm: 'repeat(5, minmax(0, 1fr))',
                           },
-                          gap: 0.5,
+                          gap: 0.25,
                         }}
                       >
                         {businessTypes.map((type) => (
@@ -451,6 +469,22 @@ export default function SignUp({ onBackToSignIn }) {
                       >
                         SIGN UP
                       </Button>
+                      <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+                        You have an account?{' '}
+                        <Link
+                          href="/"
+                          underline="hover"
+                          fontWeight={600}
+                          onClick={(event) => {
+                            if (onBackToSignIn) {
+                              event.preventDefault();
+                              onBackToSignIn();
+                            }
+                          }}
+                        >
+                          Sign In
+                        </Link>
+                      </Typography>
                     </Box>
                   </Box>
                 </form>
